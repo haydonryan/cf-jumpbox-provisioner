@@ -1,24 +1,19 @@
 #!/bin/bash
 
-
-
 # This actually needs to be a script that runs remotely using SSH so that we can also copy across the bosh_environment file to AWS
- 
 
-
-
-
-
+if [ ! -d ~/workspace ]; then
+  mkdir -p ~/workspace
+fi
 
 echo "install: --no-ri --no-rdoc
 update:  --no-ri --no-rdoc
 " >~/.gemrc
 
-
 sudo yum groupinstall 'Development Tools'
 sudo yum install -y git gcc ruby-devel libxml2 libxml2-devel libxslt libxslt-devel postgresql postgresql-devel mysql-server mysql-devel sqlite-devel golang gcc-c++
 
-# Install version 1.9.3-p547 using RVM or RBENV package managers
+# Install Chruby version 1.9.3-p547 using RVM or RBENV package managers
 wget -O chruby-0.3.8.tar.gz https://github.com/postmodern/chruby/archive/v0.3.8.tar.gz
 tar -xzvf chruby-0.3.8.tar.gz
 cd chruby-0.3.8/
@@ -39,15 +34,15 @@ chruby 1.9.3
 chruby #check that you have ruby 1.9.3
 
 gem install nokogiri -- --use-system-libraries
+gem install bundler
 
-gem install -V bosh_cli # -V for verbose output
+git clone git@github.com:pivotalservices/bosh.git # This is to get around the pull request issue shown later.
+cd ~/workspace/bosh
+bundle install
 
- # Plugin required for deploying MicroBOSH
- gem install -V bosh_cli_plugin_micro
-
- # Plugin required for 'bosh aws create' and bootstrap commands
- gem install -V bosh_cli_plugin_aws
-
-mkdir ~/workspace
+#Install Spiff
 cd ~/workspace
-
+wget https://github.com/cloudfoundry-incubator/spiff/releases/download/v1.0.3/spiff_linux_amd64.zip
+unzip spiff_linux_amd64.zip
+sudo mv spiff /usr/local/bin
+rm spiff_linux_amd64.zip
