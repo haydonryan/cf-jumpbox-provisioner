@@ -10,7 +10,7 @@ echo "install: --no-ri --no-rdoc
 update:  --no-ri --no-rdoc
 " >~/.gemrc
 
-sudo yum groupinstall 'Development Tools'
+sudo yum -y  groupinstall 'Development Tools'
 sudo yum install -y git gcc ruby-devel libxml2 libxml2-devel libxslt libxslt-devel postgresql postgresql-devel mysql-server mysql-devel sqlite-devel golang gcc-c++
 
 # Install Chruby version 1.9.3-p547 using RVM or RBENV package managers
