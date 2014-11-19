@@ -30,6 +30,8 @@ ruby-install ruby 1.9.3
 
 #and run at command line
 source /usr/local/share/chruby/chruby.sh
+echo "chruby 1.9.3" >> ~/.bashrc
+
 
 chruby 1.9.3
 chruby #check that you have ruby 1.9.3
