@@ -12,4 +12,5 @@ fi
 cd ~/workspace
 sudo yum -y install git
 git clone git@github.com:haydonryan/cf-jumpbox-provisioner.git
+cd cf-jumpbox-provisioner
 ```
