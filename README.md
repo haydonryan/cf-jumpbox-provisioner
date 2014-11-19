@@ -11,4 +11,5 @@ if [ ! -d ~/workspace ]; then
 fi
 cd ~/workspace
 sudo yum -y install git
+git clone git@github.com:haydonryan/cf-jumpbox-provisioner.git
 ```
