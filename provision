@@ -24,7 +24,7 @@ sudo ./scripts/setup.sh
 cd ..
 #add to ~/.bashrc
 echo "source /usr/local/share/chruby/chruby.sh" >> ~/.bashrc
-
+echo "chruby 1.9.3" >> ~/.bashrc
 
 ruby-install ruby 1.9.3
 
