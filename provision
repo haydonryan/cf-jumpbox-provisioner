@@ -23,7 +23,7 @@ sudo make install
 sudo ./scripts/setup.sh
 cd ..
 #add to ~/.bashrc
-source /usr/local/share/chruby/chruby.sh
+echo "source /usr/local/share/chruby/chruby.sh" >> ~/.bashrc
 
 
 ruby-install ruby 1.9.3
@@ -37,10 +37,17 @@ chruby #check that you have ruby 1.9.3
 gem install nokogiri -- --use-system-libraries
 gem install bundler
 
+gem install -V bosh_cli
+gem install -V bosh_cli_plugin_micro
+
 cd ~/workspace
 git clone git@github.com:pivotalservices/bosh.git # This is to get around the pull request issue shown later.
 cd ~/workspace/bosh
 bundle install
+cd ~/workspace/bosh/bosh_cli_plugin_aws
+gem build bosh_cli_plugin_aws.gemspec
+gem install -l *.gem
+
 
 #Install Spiff
 cd ~/workspace
