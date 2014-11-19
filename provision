@@ -39,14 +39,7 @@ gem install bundler
 
 gem install -V bosh_cli
 gem install -V bosh_cli_plugin_micro
-
-cd ~/workspace
-git clone git@github.com:pivotalservices/bosh.git # This is to get around the pull request issue shown later.
-cd ~/workspace/bosh
-bundle install
-cd ~/workspace/bosh/bosh_cli_plugin_aws
-gem build bosh_cli_plugin_aws.gemspec
-gem install -l *.gem
+gem install -V bosh_cli_plugin_aws
 
 
 #Install Spiff
