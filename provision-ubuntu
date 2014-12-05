@@ -13,8 +13,7 @@ update:  --no-ri --no-rdoc
 sudo apt-get -y install ruby ruby-dev make libxml2-dev libxslt-dev g++ mysql-client libmysqlclient-dev postgresql-server-dev-9.3 libsqlite3-dev build-essential
 sudo apt-get update
 
-sudo gem install nokogiri -- --use-system-libraries --with-xml2-include=/usr/include/libxml2 
-
+sudo apt-get install unzip
 
 
 # Install Chruby version 1.9.3-p547 using RVM or RBENV package managers
@@ -38,7 +37,7 @@ source /usr/local/share/chruby/chruby.sh
 chruby 1.9.3
 chruby #check that you have ruby 1.9.3
 
-sudo gem install nokogiri -- --use-system-libraries
+sudo gem install nokogiri -- --use-system-libraries --with-xml2-include=/usr/include/libxml2 
 sudo gem install bundler
 
 sudo gem install -V bosh_cli
@@ -54,7 +53,7 @@ sudo mv spiff /usr/local/bin
 rm spiff_linux_amd64.zip
 
 #Install CF CLI
-wget https://cli.run.pivotal.io/stable?release=linux64-binary&source=github
-mv stable?release=linux64-binary cli.tar.gz
+wget "https://cli.run.pivotal.io/stable?release=linux64-binary&source=github"
+mv "stable?release=linux64-binary&source=github" cli.tar.gz
 tar -zxvf cli.tar.gz
 sudo mv cf /usr/local/bin
