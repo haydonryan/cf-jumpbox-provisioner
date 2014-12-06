@@ -10,7 +10,7 @@ echo "install: --no-ri --no-rdoc
 update:  --no-ri --no-rdoc
 " >~/.gemrc
 
-sudo apt-get -y install ruby ruby-dev make libxml2-dev libxslt-dev g++ mysql-client libmysqlclient-dev postgresql-server-dev-9.3 libsqlite3-dev build-essential
+sudo apt-get -y install ruby ruby-dev make libxml2-dev libxslt-dev g++ mysql-client libmysqlclient-dev postgresql-server-dev-9.3 libsqlite3-dev build-essential make
 sudo apt-get update
 
 sudo apt-get install unzip
