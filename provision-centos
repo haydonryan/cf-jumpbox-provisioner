@@ -56,3 +56,6 @@ wget "https://cli.run.pivotal.io/stable?release=linux64-binary&source=github"
 mv "stable?release=linux64-binary&source=github" cli.tar.gz
 tar -zxvf cli.tar.gz
 sudo mv cf /usr/local/bin
+
+#install Silver Searcher
+sudo yum install the_silver_searcher
