@@ -16,28 +16,6 @@ sudo apt-get -y install make
 sudo apt-get -y install unzip
 
 
-
-# Install Chruby version 1.9.3-p547 using RVM or RBENV package managers
-wget -O chruby-0.3.8.tar.gz https://github.com/postmodern/chruby/archive/v0.3.8.tar.gz
-tar -xzvf chruby-0.3.8.tar.gz
-cd chruby-0.3.8/
-sudo make install
-
-# Setup chruby Ruby etc
-sudo ./scripts/setup.sh
-cd ..
-#add to ~/.bashrc
-echo "source /usr/local/share/chruby/chruby.sh" >> ~/.bashrc
-echo "chruby 1.9.3" >> ~/.bashrc
-
-ruby-install ruby 1.9.3
-
-#and run at command line
-source /usr/local/share/chruby/chruby.sh
-
-chruby 1.9.3
-chruby #check that you have ruby 1.9.3
-
 sudo gem install nokogiri -- --use-system-libraries --with-xml2-include=/usr/include/libxml2 
 sudo gem install bundler
 
