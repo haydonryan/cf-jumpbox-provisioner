@@ -58,4 +58,11 @@ tar -zxvf cli.tar.gz
 sudo mv cf /usr/local/bin
 
 #install Silver Searcher
-sudo yum install the_silver_searcher
+sudo yum install -y pcre-devel
+sudo yum install xz-devel
+cd /usr/local/src
+sudo git clone https://github.com/ggreer/the_silver_searcher.git
+cd the_silver_searcher
+sudo ./build.sh
+sudo make install
+which ag
