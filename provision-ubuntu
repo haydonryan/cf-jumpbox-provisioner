@@ -73,7 +73,7 @@ fi
 #sudo gem install -V bosh_cli_plugin_aws
 
 #uaac
-gem install cf-uaac
+sudo gem install cf-uaac
 
 #install azure cli
 sudo apt-get install -y nodejs
