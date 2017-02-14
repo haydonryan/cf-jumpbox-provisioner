@@ -1,28 +1,32 @@
 #!/bin/bash
-
-# This actually needs to be a script that runs remotely using SSH so that we can also copy across the bosh_environment file to AWS
-
 if [ ! -d ~/workspace ]; then
   mkdir -p ~/workspace
 fi
+
+cp git-prompt.sh ~/.git-prompt.sh
+echo 'source ~/.git-prompt.sh' >> ~/.bashrc
+echo 'export PS1="\[\033[36m\]\u\[\033[m\]@\[\033[32m\]\h \[\033[33;1m\]\w\[\033[m\] <$(__git_ps1 " (%s)")>\n$ "' >> ~/.bashrc
+
+echo 'export GOPATH=$HOME/go'>> ~/.bashrc
+echo 'export PATH=$PATH:$GOROOT/bin:$GOPATH/bin'>> ~/.bashrc
+
+
+source ~/.bashrc
+
+#install software I use
+sudo apt-get -y update
+sudo apt-get -y install build-essential ruby ruby-dev libxml2-dev libsqlite3-dev libxslt1-dev libpq-dev libmysqlclient-dev zlib1g-dev unzip whois make
+
+sudo gem install nokogiri -- --use-system-libraries --with-xml2-include=/usr/include/libxml2 
+sudo gem install bundler
 
 echo "install: --no-ri --no-rdoc
 update:  --no-ri --no-rdoc
 " >~/.gemrc
 
-sudo apt-get update
-sudo apt-get -y install ruby ruby-dev make libxml2-dev libxslt-dev g++ mysql-client libmysqlclient-dev postgresql-server-dev-9.3 libsqlite3-dev build-essential 
-sudo apt-get -y install make
-sudo apt-get -y install unzip
-
-
-sudo gem install nokogiri -- --use-system-libraries --with-xml2-include=/usr/include/libxml2 
-sudo gem install bundler
-
-sudo gem install -V bosh_cli
-sudo gem install -V bosh_cli_plugin_micro
-sudo gem install -V bosh_cli_plugin_aws
-
+sudo gem install -V --no-ri --no-rdoc bosh_cli
+#sudo gem install -V --no-ri --no-rdoc bosh_cli_plugin_micro
+#sudo gem install -V --no-ri --no-rdoc bosh_cli_plugin_aws
 
 #Install Spiff
 cd ~/workspace
@@ -31,11 +35,87 @@ unzip spiff_linux_amd64.zip
 sudo mv spiff /usr/local/bin
 rm spiff_linux_amd64.zip
 
+#install Spruce
+curl -s https://api.github.com/repos/geofffranks/spruce/releases/latest | jq -r ".assets[] | select(.name | test(\"${spruce_type}\")) | .browser_download_url" | xargs wget -O /tmp/spruce.tar.gz
+tar zxvf /tmp/spruce.tar.gz -C /tmp/ --strip-components 1
+chmod +x /tmp/spruce
+sudo mv /tmp/spruce /usr/local/bin
+#could improve this command by selecting single spruce file and extracting directly to /usr/local/bin
+
 #Install CF CLI
-wget "https://cli.run.pivotal.io/stable?release=linux64-binary&source=github"
-mv "stable?release=linux64-binary&source=github" cli.tar.gz
-tar -zxvf cli.tar.gz
-sudo mv cf /usr/local/bin
+wget -O /tmp/cli.tar.gz "https://cli.run.pivotal.io/stable?release=linux64-binary&source=github"
+sudo tar -zxvf /tmp/cli.tar.gz -C /usr/local/bin
+
+#Install cf gemfire plugin
+wget -O "cf-gemfire-cli-darwin-amd64" --post-data="" --header="Authorization: Token T31yH8NCcXa3x4Q9S5p_" https://network.pivotal.io/api/v2/products/p-gemfire/releases/1634/product_files/4216/download
+chmod a+x ./cf-gemfire-cli-darwin-amd64
+cf install-plugin ./cf-gemfire-cli-darwin-amd64 -f
+
+#Install https://github.com/krujos/usagereport-plugin
+cf add-plugin-repo CF-Community http://plugins.cloudfoundry.org/
+cf install-plugin 'Usage Report' -r CF-Community
+
+#install cf targets plugin
+cf add-plugin-repo CF-Community http://plugins.cloudfoundry.org/
+cf install-plugin targets -r CF-Community
 
 #install the silver Searcher
-apt-get install silversearcher-ag
+apt-get install -y silversearcher-ag
+
+
+# bosh
+if hash bosh 2>/dev/null; then
+  gem update bosh_cli
+else
+  gem install bosh_cli --no-ri --no-rdoc
+fi
+#sudo gem install -V bosh_cli_plugin_micro
+#sudo gem install -V bosh_cli_plugin_aws
+
+#uaac
+gem install cf-uaac
+
+#install azure cli
+sudo apt-get install -y nodejs
+sudo apt-get install -y npm
+sudo npm install -g azure-cli
+
+#install AWS cli
+curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
+unzip awscli-bundle.zip
+sudo ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
+
+#install mvn java 1.8
+#check what version of java is installed
+#http://stackoverflow.com/questions/7334754/correct-way-to-check-java-version-from-bash-script
+
+
+sudo add-apt-repository -y ppa:webupd8team/java
+sudo apt-get -y update
+echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
+echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
+sudo apt-get -y install maven oracle-java8-installer
+sudo apt-get install oracle-java8-set-default
+
+#Install GFSH (Gemfire Command line tool)
+curl -X POST --header "Authorization: Token T31yH8NCcXa3x4Q9S5p_"                         https://network.pivotal.io/api/v2/products/pivotal-gemfire/releases/478/eula_acceptance
+wget -O "/tmp/gemfire.deb" --post-data="" --header="Authorization: Token T31yH8NCcXa3x4Q9S5p_" https://network.pivotal.io/api/v2/products/pivotal-gemfire/releases/478/product_files/2542/download
+sudo dpkg -i /tmp/gemfire.deb
+
+#setup git user / ssh key
+cp ./keys/id_rsa_github_env ~/.ssh/id_rsa_github_env
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_rsa_github_env
+
+
+#install fly (concourse client)
+wget -O fly "https://ci.concourse.ci/api/v1/cli?arch=amd64&platform=linux"
+chmod +x fly
+sudo mv fly /usr/local/bin
+
+./gitsetup.sh
+
+#Install Luan's Vim Config
+git clone http://github.com/haydonryan/vimfiles.git ~/.vim
+~/.vim/install
+echo 'set mouse-=a' >>~/.vimrc.local
