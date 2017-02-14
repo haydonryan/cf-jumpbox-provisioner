@@ -72,6 +72,11 @@ fi
 #sudo gem install -V bosh_cli_plugin_micro
 #sudo gem install -V bosh_cli_plugin_aws
 
+# bosh-init
+cd /usr/local/bin
+sudo wget https://s3.amazonaws.com/bosh-init-artifacts/bosh-init-0.0.99-linux-amd64
+sudo mv bosh-init-0.0.99-linux-amd64 bosh-init
+
 #uaac
 sudo gem install cf-uaac
 
