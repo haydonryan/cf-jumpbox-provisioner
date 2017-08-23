@@ -64,13 +64,9 @@ apt-get install -y silversearcher-ag
 
 
 # bosh
-if hash bosh 2>/dev/null; then
-  gem update bosh_cli
-else
-  gem install bosh_cli --no-ri --no-rdoc
-fi
-#sudo gem install -V bosh_cli_plugin_micro
-#sudo gem install -V bosh_cli_plugin_aws
+wget https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-2.0.28-linux-amd64
+chmod +x ~/Downloads/bosh-cli-*
+sudo mv ~/Downloads/bosh-cli-* /usr/local/bin/bosh
 
 # bosh-init
 cd /usr/local/bin
