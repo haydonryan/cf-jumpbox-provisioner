@@ -15,7 +15,7 @@ source ~/.bashrc
 
 #install software I use
 sudo apt-get -y update
-sudo apt-get -y install build-essential ruby ruby-dev libxml2-dev libsqlite3-dev libxslt1-dev libpq-dev libmysqlclient-dev zlib1g-dev unzip whois make
+sudo apt-get -y install jq build-essential ruby ruby-dev libxml2-dev libsqlite3-dev libxslt1-dev libpq-dev libmysqlclient-dev zlib1g-dev unzip whois make
 
 sudo gem install nokogiri -- --use-system-libraries --with-xml2-include=/usr/include/libxml2 
 sudo gem install bundler
