@@ -28,13 +28,6 @@ sudo gem install -V --no-ri --no-rdoc bosh_cli
 #sudo gem install -V --no-ri --no-rdoc bosh_cli_plugin_micro
 #sudo gem install -V --no-ri --no-rdoc bosh_cli_plugin_aws
 
-#Install Spiff
-cd ~/workspace
-wget https://github.com/cloudfoundry-incubator/spiff/releases/download/v1.0.3/spiff_linux_amd64.zip
-unzip spiff_linux_amd64.zip
-sudo mv spiff /usr/local/bin
-rm spiff_linux_amd64.zip
-
 #install Spruce
 curl -s https://api.github.com/repos/geofffranks/spruce/releases/latest | jq -r ".assets[] | select(.name | test(\"${spruce_type}\")) | .browser_download_url" | xargs wget -O /tmp/spruce.tar.gz
 tar zxvf /tmp/spruce.tar.gz -C /tmp/ --strip-components 1
